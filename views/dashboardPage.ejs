@@ -1,0 +1,32 @@
+<h6>Dashboard</h6>
+<h3>Welcome <%= name %></h3>
+<p>Here are your stories:</p>
+<% if(stories.length > 0){ %>
+<table class="striped">
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Date</th>
+			<th>Status</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% for( let i = 0; i < stories.length; i++ ) { %>
+		<tr>
+			<td>
+				<a href="/stories/<%= stories[i]._id %> "
+					><%= stories[i].title %></a
+				>
+			</td>
+			<td><%= moment(stories[i].createdAt).format(dateFormat) %></td>
+			<td>
+				<span class="dash-status"> <%= stories[i].status %> </span>
+			</td>
+		</tr>
+		<% } %>
+	</tbody>
+</table>
+<% } else{ %>
+<p>You have not written any stories yet</p>
+<% } %>
