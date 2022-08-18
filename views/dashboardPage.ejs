@@ -23,6 +23,24 @@
 			<td>
 				<span class="dash-status"> <%= stories[i].status %> </span>
 			</td>
+			<td>
+				<a
+					href="/stories/edit/<%= stories[i]._id %> "
+					class="btn btn-float hoverable"
+				>
+					<i class="fas fa-edit"></i>
+				</a>
+				<form
+					action="/stories/<%= stories[i]._id %>"
+					method="POST"
+					id="delete-form"
+				>
+					<input type="hidden" name="_method" value="DELETE" />
+					<button class="btn red hoverable" type="submit">
+						<i class="fas fa-trash"></i>
+					</button>
+				</form>
+			</td>
 		</tr>
 		<% } %>
 	</tbody>

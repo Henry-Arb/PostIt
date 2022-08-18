@@ -10,6 +10,7 @@ const passport = require('passport')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
 const moment = require('moment')
+const methodOverride = require('method-override')
 const PORT = process.env.PORT || 5000
 
 // Load Config
@@ -24,14 +25,43 @@ connectDB()
 //Intializes app as express
 const app = express()
 
+//Helper functions
 //Setting up moment
 const dateFormat = 'MMMM Do YYYY @ h:mm:ss a'
 app.locals.moment = moment
 app.locals.dateFormat = dateFormat
+app.locals.editIcon = function (
+	storyUser,
+	loggedUser,
+	storyId,
+	floating = true
+) {
+	if (storyUser._id.toString() == loggedUser._id.toString()) {
+		if (floating) {
+			return `<a href="/stories/edit/${storyId}" class="btn-floating halfway-fab blue"><i class="fas fa-edit fa-small"></i></a>`
+		} else {
+			return `<a href="/stories/edit/${storyId}"><i class="fas fa-edit"></i></a>`
+		}
+	} else {
+		return ''
+	}
+}
 
 //Body Parser
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
+
+//Method Override
+app.use(
+	methodOverride(function (req, res) {
+		if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+			// look in urlencoded POST bodies and delete it
+			let method = req.body._method
+			delete req.body._method
+			return method
+		}
+	})
+)
 
 //Runs morgan only on dev mode
 if (process.env.NODE_ENV === 'development') {
