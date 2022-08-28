@@ -1,6 +1,7 @@
 //Any route that is related to authentication
 const express = require('express')
 const passport = require('passport')
+const authController = require('../controller/authController')
 const router = express.Router()
 
 // @desc Auth with Google
@@ -18,13 +19,6 @@ router.get(
 )
 // @desc logout User
 // @route GET /auth/logout
-router.get('/logout', (req, res, next) => {
-	req.logout((err) => {
-		if (err) {
-			return next(err)
-		}
-		res.redirect('/')
-	})
-})
+router.get('/logout', authController.logout)
 
 module.exports = router
